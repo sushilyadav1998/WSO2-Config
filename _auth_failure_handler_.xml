@@ -1,0 +1,29 @@
+<sequence name="_auth_failure_handler_" xmlns="http://ws.apache.org/ns/synapse">
+    <property name="error_message_type" value="application/xml"/>
+    <filter source="get-property('ERROR_CODE')" regex="405">
+  <then>
+      <sequence key="converter"/>
+      <drop/>
+  </then>
+  <else>
+  </else>
+</filter>
+<filter source="get-property('ERROR_CODE')" regex="900901">
+    <then>
+        <sequence key="invalidCredential"/>
+        <drop/>
+    </then>
+    <else>
+    </else>
+</filter>
+<filter source="get-property('ERROR_CODE')" regex="900902">
+    <then>
+        <sequence key="missingCredential"/>
+        <drop/>
+    </then>
+    <else>
+    </else>
+</filter>
+    <!--sequence key="convert"/-->
+    <sequence key="_cors_request_handler_"/>
+</sequence>
